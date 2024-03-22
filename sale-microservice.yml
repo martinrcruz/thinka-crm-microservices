@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sale-microservice-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sale-microservice-v1
+  template:
+    metadata:
+      labels:
+        app: sale-microservice-v1
+    spec:
+      containers:
+      - name: sale-microservice-v1
+        image: martinignacioriosc/thinka-crm:sale-microservice
+        ports:
+        - containerPort: 8082
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sale-microservice-v1
+spec:
+  selector:
+    app: sale-microservice-v1
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8082

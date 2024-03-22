@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      containers:
+      - name: consul
+        image: consul:latest
+        ports:
+        - name: http
+          containerPort: 8500
+        - name: dns
+          containerPort: 8600
+        livenessProbe:
+          exec:
+            command: ["/opt/consul/bin/consul", "info"]
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command: ["/opt/consul/bin/consul", "info"]
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
